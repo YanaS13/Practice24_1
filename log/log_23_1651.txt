@@ -1,0 +1,1 @@
+DataContainer(name=Ксюша, gender=ж, age=29)
