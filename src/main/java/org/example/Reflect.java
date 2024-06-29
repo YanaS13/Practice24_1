@@ -35,7 +35,6 @@ public class Reflect {
         return str;
     }
 
-
     private void createAndInvoke2(List<Class> listOfHeirs, int dayOfTheWeek, int hours, DataContainer dataContainer) throws InstantiationException, IllegalAccessException, InvocationTargetException, FileNotFoundException, UnsupportedEncodingException {
         WorkWithFiles file = new WorkWithFiles();
         file.creatLog();
@@ -52,7 +51,6 @@ public class Reflect {
             element.invoke(instanceOfTheclass, dataContainer);
             file.writingToAFile(dataContainer.toString());
         }
-
     }
 
     public String reflection(int hour, int data, DataContainer dataContainer) throws InvocationTargetException, InstantiationException, IllegalAccessException, FileNotFoundException, UnsupportedEncodingException {
@@ -62,5 +60,4 @@ public class Reflect {
         createAndInvoke2(listOfPersons, data, hour, dataContainer);
         return str;
     }
-
 }

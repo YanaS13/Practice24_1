@@ -6,6 +6,5 @@ import lombok.NonNull;
 public abstract class People {
     public abstract void personalData(@NonNull DataContainer dataContainer);
     public abstract void informationAboutThePerson(@NonNull DataContainer dataContainer);
-
 }
 

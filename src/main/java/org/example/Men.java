@@ -17,4 +17,3 @@ public class Men extends People{
         dataContainer.setName("Паша");
     }
 }
-
