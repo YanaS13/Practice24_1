@@ -6,7 +6,6 @@ import java.lang.reflect.InvocationTargetException;
 import static org.junit.Assert.assertEquals;
 
 class ReflectTest {
-
     @org.junit.jupiter.api.Test
     void reflection() throws InvocationTargetException, InstantiationException, IllegalAccessException, FileNotFoundException, UnsupportedEncodingException {
         Reflect reflect = new Reflect();
