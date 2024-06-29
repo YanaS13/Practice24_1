@@ -1,9 +1,10 @@
 package org.example;
-import lombok.*;
+
+import lombok.Data;
+
 @Data
 public class DataContainer {
-   public String name;
-   public String gender;
-   public int age;
-
+   private String name;
+   private String gender;
+   private int age;
 }

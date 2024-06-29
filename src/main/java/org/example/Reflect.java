@@ -1,5 +1,7 @@
 package org.example;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -8,56 +10,56 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Reflect {
-    public List<Class> initialization(List<Class> persons1) {
-        persons1.add(Children.class);
-        persons1.add(Men.class);
-        persons1.add(Women.class);
-        return persons1;
+    public List<Class> initialization(List<Class> listOfClassHeirs) {
+        listOfClassHeirs.add(Children.class);
+        listOfClassHeirs.add(Men.class);
+        listOfClassHeirs.add(Women.class);
+        return listOfClassHeirs;
     }
 
-    public String search(List<Class> listik, int nummy, int hours, DataContainer dataContainer) throws InstantiationException, IllegalAccessException, InvocationTargetException {
-        List<Method> listm = new ArrayList<>();
+    private String createAndInvoke(List<Class> listOfHeirs, int dayOfTheWeek, int hours, DataContainer dataContainer) throws InstantiationException, IllegalAccessException, InvocationTargetException {
+        List<Method> listOfMetods = new ArrayList<>();
         String str = "";
-        Object s = null;
-        listik = listik.stream().filter(x -> ((Days) x.getAnnotation(Days.class)).weekdays() == nummy).collect(Collectors.toList());
-        for (Class lis : listik) {
-            s = lis.newInstance();
-            listm = List.of(lis.getDeclaredMethods());
+        Object instanceOfTheclass = null;
+        listOfHeirs = listOfHeirs.stream().filter(x -> ((Days) x.getAnnotation(Days.class)).weekdays() == dayOfTheWeek).collect(Collectors.toList());
+        for (Class element : listOfHeirs) {
+            instanceOfTheclass = element.newInstance();
+            listOfMetods = List.of(element.getDeclaredMethods());
         }
-        listm = listm.stream().filter(x -> ((AnnotationTime) x.getAnnotation(AnnotationTime.class)).hour() == hours).collect(Collectors.toList());
-        listm = listm.stream().sorted(Comparator.comparingInt(x -> ((AnnotationTime) x.getAnnotation(AnnotationTime.class)).priority())).toList();
-        for (Method lism : listm) {
-            lism.invoke(s, dataContainer);
+        listOfMetods = listOfMetods.stream().filter(x -> ((AnnotationTime) x.getAnnotation(AnnotationTime.class)).hour() == hours).collect(Collectors.toList());
+        listOfMetods = listOfMetods.stream().sorted(Comparator.comparingInt(x -> ((AnnotationTime) x.getAnnotation(AnnotationTime.class)).priority())).toList();
+        for (Method element : listOfMetods) {
+            element.invoke(instanceOfTheclass, dataContainer);
             str = str + dataContainer + '\n';
         }
         return str;
     }
 
 
-    public void searchfile(List<Class> listik, int nummy, int hours, DataContainer dataContainer) throws InstantiationException, IllegalAccessException, InvocationTargetException {
-        Failiki failiki = new Failiki();
-        failiki.creatlog();
-        List<Method> listm = new ArrayList<>();
-        Object s = null;
-        listik = listik.stream().filter(x -> ((Days) x.getAnnotation(Days.class)).weekdays() == nummy).collect(Collectors.toList());
-        for (Class lis : listik) {
-            s = lis.newInstance();
-            listm = List.of(lis.getDeclaredMethods());
+    private void createAndInvoke2(List<Class> listOfHeirs, int dayOfTheWeek, int hours, DataContainer dataContainer) throws InstantiationException, IllegalAccessException, InvocationTargetException, FileNotFoundException, UnsupportedEncodingException {
+        WorkWithFiles file = new WorkWithFiles();
+        file.creatLog();
+        List<Method> listOfMetods = new ArrayList<>();
+        Object instanceOfTheclass = null;
+        listOfHeirs = listOfHeirs.stream().filter(x -> ((Days) x.getAnnotation(Days.class)).weekdays() == dayOfTheWeek).collect(Collectors.toList());
+        for (Class element : listOfHeirs) {
+            instanceOfTheclass = element.newInstance();
+            listOfMetods = List.of(element.getDeclaredMethods());
         }
-        listm = listm.stream().filter(x -> ((AnnotationTime) x.getAnnotation(AnnotationTime.class)).hour() == hours).collect(Collectors.toList());
-        listm = listm.stream().sorted(Comparator.comparingInt(x -> ((AnnotationTime) x.getAnnotation(AnnotationTime.class)).priority())).toList();
-        for (Method lism : listm) {
-            lism.invoke(s, dataContainer);
-            failiki.filewrting(dataContainer.toString());
+        listOfMetods = listOfMetods.stream().filter(x -> ((AnnotationTime) x.getAnnotation(AnnotationTime.class)).hour() == hours).collect(Collectors.toList());
+        listOfMetods = listOfMetods.stream().sorted(Comparator.comparingInt(x -> ((AnnotationTime) x.getAnnotation(AnnotationTime.class)).priority())).toList();
+        for (Method element : listOfMetods) {
+            element.invoke(instanceOfTheclass, dataContainer);
+            file.writingToAFile(dataContainer.toString());
         }
 
     }
 
-    public String reflection(int hour, int data, DataContainer dataContainer) throws InvocationTargetException, InstantiationException, IllegalAccessException {
-        List<Class> persons = new ArrayList<>();
-        persons = initialization(persons);
-        String str = search(persons, data, hour, dataContainer);
-        searchfile(persons, data, hour, dataContainer);
+    public String reflection(int hour, int data, DataContainer dataContainer) throws InvocationTargetException, InstantiationException, IllegalAccessException, FileNotFoundException, UnsupportedEncodingException {
+        List<Class> listOfPersons = new ArrayList<>();
+        listOfPersons = initialization(listOfPersons);
+        String str = createAndInvoke(listOfPersons, data, hour, dataContainer);
+        createAndInvoke2(listOfPersons, data, hour, dataContainer);
         return str;
     }
 

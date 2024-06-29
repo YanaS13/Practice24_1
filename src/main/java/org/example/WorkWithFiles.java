@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
-public class Failiki implements IOfile {
+public class WorkWithFiles implements IOfile {
     @Override
-    public void fileclean(String filename ) {
+    public void clearingTheFile(String filename ) {
         File logDir = new File("log");
         File[] files = logDir.listFiles();
         if (files != null && files.length > 1) {
@@ -21,24 +21,17 @@ public class Failiki implements IOfile {
     }
 
     @Override
-    public void filewrting(String str) {
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH_mmss"));
-        String filename = "log/log_" + timestamp + ".txt";
-        fileclean(filename);
-        PrintWriter writer = null;
-        try {
-            writer = new PrintWriter(filename, "UTF-8");
+    public void writingToAFile(String str) throws RuntimeException,FileNotFoundException,UnsupportedEncodingException{
+        String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH_mmss"));
+        String fileName = "log/log_" + timeStamp + ".txt";
+        clearingTheFile(fileName);
+        try(PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
             writer.println(str);
-            writer.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void creatlog() {
+    public void creatLog() {
         File log = new File("log");
         if (!log.exists()) {
             log.mkdir();
