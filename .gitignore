@@ -5,12 +5,17 @@ target/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
+.idea/encodings.xml
+.idea/vcs.xml
+.idea/uiDesigner.xml
+.idea/misc.xml
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
 *.iws
 *.iml
 *.ipr
+/README.md
 
 ### Eclipse ###
 .apt_generated
