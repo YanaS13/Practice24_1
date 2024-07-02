@@ -19,7 +19,6 @@ target/
 *.ipr
 /README.md
 
-
 ### Eclipse ###
 .apt_generated
 .classpath
