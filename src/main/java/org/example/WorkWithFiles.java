@@ -1,4 +1,5 @@
 package org.example;
+
 import java.io.PrintWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,7 +10,7 @@ import java.util.Arrays;
 
 public class WorkWithFiles implements IOfile {
     @Override
-    public void clearingTheFile(String filename ) {
+    public void clearingTheFile(String filename) {
         File logDir = new File("log");
         File[] files = logDir.listFiles();
         if (files != null && files.length > 1) {
@@ -21,11 +22,11 @@ public class WorkWithFiles implements IOfile {
     }
 
     @Override
-    public void writingToAFile(String str) throws RuntimeException,FileNotFoundException,UnsupportedEncodingException{
+    public void writingToAFile(String str) throws RuntimeException, FileNotFoundException, UnsupportedEncodingException {
         String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH_mmss"));
         String fileName = "log/log_" + timeStamp + ".txt";
         clearingTheFile(fileName);
-        try(PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
+        try (PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
             writer.println(str);
         }
     }

@@ -14,8 +14,3 @@ import java.lang.annotation.RetentionPolicy;
     int priority();
     String description();
 }
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-@interface AnnotationTimes {
-    AnnotationTime[] value();
-}
