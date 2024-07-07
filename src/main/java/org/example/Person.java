@@ -10,4 +10,10 @@ public class Person {
     private Cat cat;
     private Dog dog;
 
+    public Person(Parrot parrot1, Parrot parrot2, Cat cat, Dog dog) {
+        this.parrot1 = parrot1;
+        this.parrot2 = parrot2;
+        this.cat = cat;
+        this.dog = dog;
+    }
 }

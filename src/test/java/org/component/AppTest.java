@@ -1,19 +1,19 @@
 
 package org.component;
 
-        import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-        import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-class AppTest {
+public class AppTest {
 
     @org.junit.jupiter.api.Test
-    void main() {
+    public void main() {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         Person p = context.getBean(Person.class);
         p.getDog().setName("Дерик");
-        String wait =p.getDog().getName();
+        String wait = p.getDog().getName();
         String rider = "Дерик";
-        assertEquals(rider,wait);
+        assertEquals(rider, wait);
     }
 }
