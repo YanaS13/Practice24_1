@@ -8,4 +8,3 @@ public class DataContainer {
     private String gender;
     private int age;
 }
-
