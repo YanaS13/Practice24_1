@@ -1,20 +1,16 @@
 package org.example.model;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+import java.util.LinkedList;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "baskets")
 public class Basket {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(nullable = false)
-    private String promocode;
+    private Integer id;
+    private LinkedList<String> listOfProducts;
+    private String promoCod;
 
 }

@@ -1,41 +1,40 @@
 package org.example.service;
 
-import org.example.model.Basket;
+import org.example.model.Client;
 import org.example.model.Product;
-import org.example.model.ProductBasket;
-import org.example.repository.BasketRepository;
-import org.example.repository.ProductBasketRepository;
-import org.example.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 @Service
 public class BasketService {
-
-    private BasketRepository basketRepository;
-    private ProductBasketRepository productBasketRepository;
-    @Autowired
-    public BasketService(BasketRepository basketRepository, ProductRepository productRepository) {
-        this.basketRepository = basketRepository;
-        this.productBasketRepository = productBasketRepository;
+    private static final Map<Integer, ArrayList<Product>> simpleDataBase = new HashMap<>();
+    private Integer basketID = 0;
+    private ProductService productService = new ProductService();
+    public Integer creatBasket() {
+        Integer basketIDNew = basketID ;
+        simpleDataBase.put(basketIDNew,new ArrayList<Product>());
+        basketID = basketID + 1;
+        return basketIDNew;
     }
-
-    public Basket creatBasket() {
-        Basket basket = new Basket();
-        basket.setPromocode("promo");
-        return basketRepository.save(basket);
+    public void addToBasket(Integer basketId,Integer productID){
+        ArrayList<Product> listOfProducts = new ArrayList<>();
+        listOfProducts = simpleDataBase.get(basketId);
+        listOfProducts.add(productService.getByID(productID));
+        simpleDataBase.put(basketId,listOfProducts);
     }
-    public Optional<Basket> findById(int id){
-        return basketRepository.findById(id);
-    }
-
-    public void addToBasket(ProductBasket productBasket) {
-         productBasketRepository.save(productBasket);
-    }
-
-    public void deleteBasket(Basket basket, Product product) {
-        productBasketRepository.deleteAllByBinId(basket,product);
+    public Boolean deleteFromBasket(Integer basketId,Integer productID){
+        ArrayList<Product> listOfProducts = new ArrayList<>();
+        Boolean done = Boolean.FALSE;
+        listOfProducts = simpleDataBase.get(basketId);
+        for (Product element : listOfProducts){
+            if (element.getProductId().equals(productID)){
+                listOfProducts.remove(element);
+                done = Boolean.TRUE;
+            }
+        }
+        simpleDataBase.put(basketId,listOfProducts);
+        return done;
     }
 }

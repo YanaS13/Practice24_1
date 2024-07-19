@@ -1,42 +1,47 @@
-package org.example.controllers;
+package org.example.Controllers;
 
+import org.example.model.Client;
 import org.example.model.Product;
 import org.example.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Optional;
-
+import java.util.List;
 @RestController
 public class ProductController {
-    @Autowired
     private ProductService productService;
-
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService){
         this.productService = productService;
     }
-
     @PostMapping(value = "/product")
-    public ResponseEntity<?> create(@RequestBody Product product) throws URISyntaxException {
+    public ResponseEntity<?> create(@RequestBody Product product) {
         productService.creatProduct(product);
-        return ResponseEntity
-                .created(new URI("http://localhost:8080/product/" + product.getId()))
-                .build();
+        return new ResponseEntity(HttpStatus.CREATED);
     }
+    @DeleteMapping(value = "/product/{id}")
+    public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
+        final boolean deleted = productService.deleteProduct(id);
 
-    @DeleteMapping(value = "/product/delete")
-    public ResponseEntity<?> delete(@PathVariable int id) {
-        productService.deleteProduct(id);
-        return (ResponseEntity<Void>) ResponseEntity.ok();
+        return deleted
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
+    @GetMapping(value = "/product/{id}")
+    public ResponseEntity<Product> read(@PathVariable(name = "id") int id){
+        final Product product = productService.getByID(id);
 
-    @GetMapping(value = "/product/{name}")
-    public Optional<Product> read(@PathVariable int id) {
-        return productService.findByName(id);
+        return product != null
+                ? new ResponseEntity<>(product, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
+    @GetMapping(value = "/product")
+    public ResponseEntity<List<Product>> read() {
+        final List<Product> products = productService.listOfProducts();
 
+        return products != null &&  !products.isEmpty()
+                ? new ResponseEntity<>(products, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

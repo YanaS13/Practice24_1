@@ -1,25 +1,31 @@
 package org.example.service;
 
 import org.example.model.Client;
-import org.example.repository.ClientRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ClientService {
-    private ClientRepository clientRepository;
+    private static final Map<Integer, Client> simpleDataBase = new HashMap<>();
 
-    private ClientService(ClientRepository сlientRepository) {
-        this.clientRepository = сlientRepository;
-    }
+
+    private Integer userID = 0;
+
+    private BasketService basketService = new BasketService();
 
     public void clientRegistration(Client client) {
-        clientRepository.save(client);
+        client.setId(userID);
+        client.setBasketID(basketService.creatBasket());
+        simpleDataBase.put(userID, client);
+        userID = userID + 1;
     }
 
-    public Optional<Client> getByID(int id) {
-        return this.clientRepository.findById(id);
+    public Client getByID(int id) {
+        return simpleDataBase.get(id);
     }
 
 }

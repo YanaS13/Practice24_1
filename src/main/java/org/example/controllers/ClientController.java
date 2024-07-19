@@ -1,41 +1,32 @@
-package org.example.controllers;
+package org.example.Controllers;
 
-import lombok.Data;
 import org.example.model.Client;
-import org.example.service.BasketService;
 import org.example.service.ClientService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Optional;
-
-@Data
+import java.util.List;
 @RestController
 public class ClientController {
-    @Autowired
-    private ClientService clientService;
-    @Autowired
-    private BasketService basketService;
+    private final ClientService clientService;
 
     public ClientController(ClientService clientServices) {
         this.clientService = clientServices;
     }
-
     @PostMapping(value = "/clients")
-    public ResponseEntity<?> create(@RequestBody Client client) throws URISyntaxException {
+    public ResponseEntity<?> create(@RequestBody Client client) {
         clientService.clientRegistration(client);
-        return ResponseEntity
-                .created(new URI("http://localhost:8080/clients/" + client.getId()))
-                .build();
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/clients/{name}")
-    public Optional<Client> read(@PathVariable int id) {
-        return clientService.getByID(id);
+    @GetMapping(value = "/clients/{id}")
+    public ResponseEntity<Client> read(@PathVariable(name = "id") int id){
+        final Client client = clientService.getByID(id);
 
+        return client != null
+                ? new ResponseEntity<>(client, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
 
