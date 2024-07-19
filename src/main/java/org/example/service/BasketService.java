@@ -1,42 +1,41 @@
 package org.example.service;
 
-import org.example.model.Sold;
+import org.example.model.Basket;
+import org.example.model.Product;
+import org.example.model.ProductBasket;
 import org.example.repository.BasketRepository;
+import org.example.repository.ProductBasketRepository;
 import org.example.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BasketService {
-    @Autowired
-    private BasketRepository basketRepository;
-    private ProductRepository productRepository;
 
+    private BasketRepository basketRepository;
+    private ProductBasketRepository productBasketRepository;
+    @Autowired
     public BasketService(BasketRepository basketRepository, ProductRepository productRepository) {
         this.basketRepository = basketRepository;
-        this.productRepository = productRepository;
+        this.productBasketRepository = productBasketRepository;
     }
 
-    public Integer creatBasket() {
-        return basketRepository.creatBasket();
+    public Basket creatBasket() {
+        Basket basket = new Basket();
+        basket.setPromocode("promo");
+        return basketRepository.save(basket);
+    }
+    public Optional<Basket> findById(int id){
+        return basketRepository.findById(id);
     }
 
-    public int addToBasket(Integer basketId, Integer productID) {
-        return basketRepository.creatIn(basketId, productID);
+    public void addToBasket(ProductBasket productBasket) {
+         productBasketRepository.save(productBasket);
     }
 
-    public Boolean deleteBasket(Integer productID, Integer basketId) {
-        return productRepository.deleteById(productID, basketId);
-    }
-    @Transactional
-    public void pay(int binId) {
-        List<Sold> sold = basketRepository.findAll(binId);
-        for (Sold solds : sold) {
-            productRepository.sell(solds);
-        }
-        basketRepository.purchase(binId);
+    public void deleteBasket(Basket basket, Product product) {
+        productBasketRepository.deleteAllByBinId(basket,product);
     }
 }

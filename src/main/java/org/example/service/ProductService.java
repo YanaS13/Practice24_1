@@ -14,15 +14,18 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public long creatProduct(Product product) {
-        return productRepository.creatProduct(product);
+    public Product creatProduct(Product product) {
+        return productRepository.save(product);
     }
 
-    public Boolean deleteProduct(int id) {
-        return this.productRepository.deleteById(id);
+    public void deleteProduct(int id) { this.productRepository.deleteById(id);
     }
 
-    public Optional<Product> findById(Integer id) {
+    public Optional<Product> findByName(Integer id) {
         return this.productRepository.findById(id);
     }
+    public void sell(int quantity, int productId) {
+        this.productRepository.sell(quantity, productId);
+    }
 }
+
