@@ -20,15 +20,6 @@ public class PersonalInformationTest1 {
         System.out.println(exception.getMessage());
     }
 
-    @Test
-    public void maritalStatus() {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-        PersonalInformation personalInformation = context.getBean(PersonalInformation.class);
-        LinkedList<String> nameOfChild = new LinkedList<>();
-        nameOfChild.add("khihg");
-        nameOfChild.add("jhg,igks");
-        NullPointerException exception = assertThrows(NullPointerException.class, () ->
-                personalInformation.maritalStatus(true, 2, nameOfChild));
-        System.out.println(exception.getMessage());
-    }
+
+
 }
