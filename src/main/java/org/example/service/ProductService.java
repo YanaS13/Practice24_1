@@ -15,7 +15,7 @@ public class ProductService {
     }
 
     public long creatProduct(Product product) {
-        return productRepository.creatProduct(product);
+        return productRepository.save(product);
     }
 
     public Boolean deleteProduct(int id) {

@@ -20,7 +20,7 @@ public class BasketService {
         this.productRepository = productRepository;
     }
 
-    public Integer creatBasket() {
+    public Long creatBasket() {
         return basketRepository.creatBasket();
     }
 
